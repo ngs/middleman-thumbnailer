@@ -9,4 +9,5 @@ group :development, :test do
   gem 'rspec'
   gem 'builder'
   gem 'erubis'
+  gem 'simplecov', require: false
 end
