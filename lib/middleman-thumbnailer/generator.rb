@@ -42,7 +42,7 @@ module Middleman
           image = ::Magick::Image.read(origin).first
           specs.each do |name, spec|
             if spec.has_key? :dimensions then
-              yield convert_image image, spec[:dimensions]
+              yield convert_image(image, spec[:dimensions]), spec
             end
           end
         end
