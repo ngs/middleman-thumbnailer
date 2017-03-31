@@ -16,8 +16,6 @@ module Middleman
       end
 
       def call(env)
-        status, headers, response = @rack.call(env)
-
         path = env["PATH_INFO"]
 
         absolute_path = File.join(@mm_app.source_dir, path)
@@ -59,11 +57,13 @@ module Middleman
           end
 
           status = 200
+          headers = {}
           headers["Content-Length"] = file_info[:length]
           headers["Content-Type"] = file_info[:mime_type]
           response = [file_data]
+          return [status, headers, response]
         end
-        [status, headers, response]
+        @rack.call(env)
       end
     end
   end
