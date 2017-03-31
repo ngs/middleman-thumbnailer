@@ -94,7 +94,7 @@ module Middleman
         resource_list = files.map do |file|
           path = file.gsub(app.source_dir.to_s + File::SEPARATOR, '')
           specs = ::Middleman::Thumbnailer::Generator.specs(path, dimensions)
-
+          ::Middleman::Thumbnailer::Generator.generate(app.source_dir, File.join(app.root, app.config[:build_dir]), path, specs)
           specs.map do |name, spec|
             resource = nil
             begin
