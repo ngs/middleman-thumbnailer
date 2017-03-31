@@ -42,28 +42,25 @@ module Middleman
           image = ::Magick::Image.read(origin).first
           specs.each do |name, spec|
             if spec.has_key? :dimensions then
-              image.change_geometry(spec[:dimensions]) do |cols, rows, img|
-                img = img.resize(cols, rows)
-                img = img.sharpen(0.5, 0.5)
-                yield img, spec
-              end
+              yield convert_image image, spec[:dimensions]
             end
           end
         end
 
         def image_for_spec(origin, spec)
           image = ::Magick::Image.read(origin).first
-
           if spec.has_key? :dimensions then
-            image.change_geometry(spec[:dimensions]) do |cols, rows, img|
-              img = img.resize(cols, rows)
-              img = img.sharpen(0.5, 0.5)
-              return img
-            end
+            return convert_image image, spec[:dimensions]
           end
-          return image
+          image
         end
 
+        def convert_image(img, dimensions)
+          cols, rows = dimensions.split('x').map(&:to_i)
+          img = img.resize_to_fill(cols, rows)
+          img = img.sharpen(0.5, 0.5)
+          img
+        end
 
         #This returns a reverse mapping from a thumbnail's filename to the original filename, and the thumbnail's specs
         def original_map_for_files(files, specs)
