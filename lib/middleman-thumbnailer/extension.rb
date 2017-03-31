@@ -52,21 +52,21 @@ module Middleman
         #
         #   app.use Rack, options
         # end
-        app.before_build do |builder|
-          opts = extensions[:thumbnailer].options
-          dir = File.join(source_dir, app.config[:images_dir])
-          files = ::Middleman::Thumbnailer::DirGlob.glob(dir, opts[:namespace_directory], opts[:filetypes])
+        # app.before_build do |builder|
+        #   opts = extensions[:thumbnailer].options
+        #   dir = File.join(source_dir, app.config[:images_dir])
+        #   files = ::Middleman::Thumbnailer::DirGlob.glob(dir, opts[:namespace_directory], opts[:filetypes])
 
-          files.each do |file|
-            path = file.gsub(app.source_dir.to_s, '')
-            specs = ::Middleman::Thumbnailer::Generator.specs(path, opts[:dimensions])
-            ::Middleman::Thumbnailer::Generator.generate(app.source_dir, File.join(app.root, app.config[:build_dir]), path, specs)
-            specs.each do |key, spec|
-              next if key == :original
-              builder.thor.say_status :generate, spec[:name]
-            end
-          end
-        end
+        #   files.each do |file|
+        #     path = file.gsub(app.source_dir.to_s, '')
+        #     specs = ::Middleman::Thumbnailer::Generator.specs(path, opts[:dimensions])
+        #     ::Middleman::Thumbnailer::Generator.generate(app.source_dir, File.join(app.root, app.config[:build_dir]), path, specs)
+        #     specs.each do |key, spec|
+        #       next if key == :original
+        #       builder.thor.say_status :generate, spec[:name]
+        #     end
+        #   end
+        # end
       end
 
       def after_configuration
